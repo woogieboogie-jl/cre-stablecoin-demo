@@ -71,12 +71,6 @@ The demo operates from the perspective of a **commercial bank** that wants to:
 │  │  - ERC20 standard token                              │ │
 │  │  - CCIP-compatible (future)                          │ │
 │  └──────────────────────────────────────────────────────┘ │
-│                                                             │
-│  ┌──────────────────────────────────────────────────────┐ │
-│  │  DataStreamsOracle.sol                               │ │
-│  │  - Verifies Chainlink Data Streams                   │ │
-│  │  - Stores ETH/USD price (reference)                  │ │
-│  └──────────────────────────────────────────────────────┘ │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -408,19 +402,6 @@ function grantMintRole(address minter) external onlyOwner
 
 ---
 
-### 6.3 DataStreamsOracle.sol (REUSED AS-IS)
-
-**Source:** `stablecoin-workshop-evm/contracts/DataStreamsOracle.sol`
-
-**Purpose:** Reference implementation showing Chainlink Data Streams integration.
-
-**Modifications:** 
-- ✅ **NONE** - Used for reference/educational purposes only
-
-**Note:** In this demo, minting is NOT tied to ETH collateral. The oracle contract is deployed for educational completeness but not directly used in the minting workflow.
-
----
-
 ## 7. CRE Workflow Specifications
 
 ### 7.1 Workflow 1: Bank Minting Instruction Handler
@@ -492,10 +473,9 @@ secretsNames:
 ### 8.1 Smart Contract Deployment (Sepolia)
 
 **Deployment Order:**
-1. Deploy `DataStreamsOracle.sol` (reference only)
-2. Deploy `StablecoinERC20.sol`
-3. Deploy `MintingConsumer.sol` (with workflow owner address)
-4. Grant minter role: `stablecoin.grantMintRole(mintingConsumer.address)`
+1. Deploy `StablecoinERC20.sol`
+2. Deploy `MintingConsumer.sol` (with workflow owner address)
+3. Grant minter role: `stablecoin.grantMintRole(mintingConsumer.address)`
 
 **Configuration Artifacts:**
 - Contract addresses stored in `.env`
@@ -671,123 +651,4 @@ secretsNames:
 
 ---
 
-## 13. Dependencies
-
-### 13.1 External Dependencies
-
-**Chainlink Infrastructure:**
-- ✅ CRE CLI (latest version)
-- ✅ KeystoneForwarder contract (deployed on Sepolia)
-- ✅ Chainlink Data Streams Verifier (deployed on Sepolia)
-
-**Development Tools:**
-- ✅ Bun 1.2.21+
-- ✅ Hardhat (for contract development)
-- ✅ OpenZeppelin Contracts
-- ✅ Viem (for ABI encoding)
-
-**Testing Infrastructure:**
-- ✅ Sepolia RPC endpoint
-- ✅ Sepolia LINK tokens (if needed)
-- ✅ Webhook.site (for HTTP testing)
-- ✅ Etherscan API (for verification)
-
----
-
-### 13.2 Contract Dependencies
-
-**StablecoinERC20.sol:**
-- OpenZeppelin ERC20
-- OpenZeppelin ERC20Burnable
-- OpenZeppelin Ownable
-
-**MintingConsumer.sol:**
-- Chainlink IReceiverTemplate
-- Chainlink IERC165
-
----
-
-## 14. Documentation Requirements
-
-### 14.1 Required Documentation
-
-**README.md:**
-- Project overview
-- Quick start guide
-- Prerequisites
-- Architecture diagram
-
-**INSTRUCTIONS.md:**
-- Step-by-step setup
-- Contract deployment guide
-- CRE workflow setup
-- Testing procedures
-- Troubleshooting
-
-**API_REFERENCE.md:**
-- HTTP endpoint specification
-- Request/response formats
-- Error codes
-- Example payloads
-
-**ARCHITECTURE.md:**
-- System design overview
-- Security model explanation
-- Data flow diagrams
-- Component interactions
-
----
-
-### 14.2 Code Documentation
-
-**Smart Contracts:**
-- NatSpec comments for all public functions
-- Inline comments for complex logic
-- Security notes where applicable
-
-**CRE Workflow:**
-- TSDoc comments for functions
-- Inline comments for banking logic
-- Configuration examples
-
----
-
-## 15. Glossary
-
-**CRE (Chainlink Runtime Environment):** Chainlink's decentralized compute platform for running off-chain workflows with on-chain verification.
-
-**DON (Decentralized Oracle Network):** Network of independent Chainlink nodes that execute workflows and provide consensus.
-
-**Consumer Contract:** Smart contract that receives and processes reports from CRE workflows (implements IReceiverTemplate).
-
-**KeystoneForwarder:** Chainlink's on-chain contract that verifies DON signatures before forwarding reports to consumer contracts.
-
-**IReceiverTemplate:** Chainlink's standard interface for consumer contracts, providing built-in security validations.
-
-**SWIFT MT103:** Standard SWIFT message format for customer credit transfers (payment instructions).
-
-**Minter Role:** Authorization pattern where specific addresses are granted permission to mint tokens.
-
-**Report:** DON-signed data package containing workflow results and cryptographic proofs.
-
----
-
-## 16. Change Log
-
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2025-01-21 | Initial | Initial PRD - MVP requirements defined |
-
----
-
-## 17. Approval
-
-**Prepared By:** Chainlink CRE Team  
-**Reviewed By:** [Pending]  
-**Approved By:** [Pending]  
-**Date:** 2025-01-21  
-
----
-
 **End of Product Requirements Document**
-
